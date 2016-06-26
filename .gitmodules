@@ -1,0 +1,3 @@
+[submodule "html/vs"]
+	path = html/vs
+	url = https://github.com/slowe/VirtualSky.git

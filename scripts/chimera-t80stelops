@@ -1,0 +1,29 @@
+import sys
+from chimera.core.cli import ChimeraCLI, action
+
+
+class ChimeraTelops(ChimeraCLI):
+    def __init__(self):
+        ChimeraCLI.__init__(self, "chimera-t80stelops", "Telops Webserver script", 0.1, port=9003)
+
+        self.addHelpGroup("TO", "Telops")
+        self.addHelpGroup("COMMANDS", "Commands")
+
+        self.addController(name="t80stelops", cls="T80STelops", required=True, helpGroup="TO",
+                           help="Telops Controller")
+
+        @action(short='s', help="Start Server", helpGroup="COMMANDS")
+        def start():
+            print 'caca'
+
+
+
+
+def main():
+    cli = ChimeraTelops()
+    cli.run(sys.argv)
+    cli.wait()
+
+
+if __name__ == '__main__':
+    main()
