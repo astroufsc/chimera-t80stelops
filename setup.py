@@ -4,7 +4,7 @@ setup(
     name='chimera_t80stelops',
     version='0.0.1',
     packages=['chimera_t80stelops', 'chimera_t80stelops.controllers'],
-    scripts=['scripts/chimera-t80stelops', 'scripts/chimera-t80scacti'],
+    scripts=['scripts/chimera-t80stelops'],
     url='http://github.com/astroufsc/chimera-t80stelops',
     license='GPL v2',
     author='William Schoenell',
