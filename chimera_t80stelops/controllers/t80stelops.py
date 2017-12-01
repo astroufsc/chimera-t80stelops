@@ -45,7 +45,9 @@ class T80STelops(ChimeraObject):
                   "weatherstations": [],
                   "fans": [],
                   "seeingmonitors": [],
-                  "schedulers": []
+                  "schedulers": [],
+                  "local_manager_ip": "127.0.0.1",
+                  "local_manager_port": 9001,
                   }
 
     def __init__(self):
@@ -57,7 +59,7 @@ class T80STelops(ChimeraObject):
         self._data = dict()
         self.setHz(1. / self["query_delay"])
 
-        self.localManager = Manager("192.168.30.108", 9001)
+        self.localManager = Manager(self["local_manager_ip"], self["local_manager_port"])
 
         # Define callbacks for scheduler actions
         if self["schedulers"] is not None:
