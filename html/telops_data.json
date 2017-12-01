@@ -1,0 +1,19 @@
+{
+	{"telescope": {"ra": "10:00:00",
+				   "dec": "-10:00:00",
+				   "alt": "-10:00:00",
+				   "az": "100",
+				   "temp_m1": "10 deg C",
+				   "temp_m2": "10 deg C",
+				   "mirror_cover": "Deployed",
+				   "state": "Tracking",
+				   "last_update": "<p class="state-ok">2016-10-10 20:00:00</p>"}
+				   },
+	{"camera": {"ra": "10:00:00",
+			    "dec": "-10:00:00",
+			    "alt": "-10:00:00",
+			    "az": "100",
+			    "state": "Tracking",
+			    "last_update": "<p class="state-ok">2016-10-10 20:00:00</p>"}
+			    },
+}

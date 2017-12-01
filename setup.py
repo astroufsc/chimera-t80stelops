@@ -1,13 +1,13 @@
 from distutils.core import setup
 
 setup(
-    name='chimera_template',
+    name='chimera_t80stelops',
     version='0.0.1',
-    packages=['chimera_template', 'chimera_template.instruments', 'chimera_template.controllers'],
-    scripts=[],
-    url='http://github.com/astroufsc/chimera-template',
+    packages=['chimera_t80stelops', 'chimera_t80stelops.controllers'],
+    scripts=['scripts/chimera-t80stelops', 'scripts/chimera-t80scacti'],
+    url='http://github.com/astroufsc/chimera-t80stelops',
     license='GPL v2',
     author='William Schoenell',
     author_email='william@iaa.es',
-    description='Template for chimera plugins'
+    description='Template T80S Telops page'
 )

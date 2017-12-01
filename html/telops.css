@@ -1,0 +1,61 @@
+.telescope {
+	text-align: center;
+}
+
+.telescope-data {
+/* 	width: 50%; */
+	margin-left:auto; 
+    margin-right:auto;
+}
+
+.weather-data {
+/* 	width: 50%; */
+	margin-left:auto; 
+    margin-right:auto;
+}
+
+.lights-data {
+/* 	width: 50%; */
+	margin-left:auto; 
+    margin-right:auto;
+}
+
+.maps-graphs {
+	width: 50%;
+	text-align: center;
+	font-weight: bold;
+	color: blue;
+}
+
+.data-list {
+	width: 30%;
+	valign: top;
+}
+
+.state-ok {
+	color: green;
+}
+
+.state-nok {
+	color: red;
+}
+
+.observatory-name {
+	text-align: center;
+	font-weight: bold;
+	color: blue;
+}
+
+.observatory-prop-name {
+	font-weight: bold;
+}
+
+.weather-name {
+	text-align: center;
+	font-weight: bold;
+	color: blue;
+}
+
+.weather-prop-name {
+	font-weight: bold;
+}

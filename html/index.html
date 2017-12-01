@@ -1,0 +1,591 @@
+<html>
+<head>
+    <title>T80 telops page</title>
+    <link rel="stylesheet" type="text/css" href="telops.css">
+
+    <!-- common variables to all javascript like lat, long -->
+    <script language="JavaScript" src="site.js"></script>
+
+    <!-- Load clock javascript -->
+    <script language="JavaScript" src="sidereal_clock.js"></script>
+
+    <!-- Load skymap javascript -->
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="vs/virtualsky.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+
+                var planetarium = $.virtualsky({
+                        id: 'starmap',
+                        projection: 'fisheye',
+                        live: true,
+                        showgalaxy: true,
+                        latitude: latitu,
+                        longitude: longit
+                });
+                planetarium.addPointer({
+                                            'ra': 0,
+                                            'dec': 0,
+                                            'label':'T80',
+                                            'colour':'rgb(255,220,220)'
+                        });
+                telescope_pointer = planetarium.pointers[0]
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+    <!-- Update tables data periodically -->
+    <script src="query_data.js" type="text/javascript"></script>
+
+    <!-- Reload images periodically -->
+    <script>
+        // 	1 - Graphs every minute
+        setInterval(function(){
+            $("#teltempgraph").attr("src", "/~cacti/graphs/graph_5_1.png?"+new Date().getTime());
+        },60000);
+        // 	2 - Allsky images every 10 minutes
+        setInterval(function(){
+            $("#lcogtallsky").attr("src", "http://lcogt.net/camera/data/lsc/allsky/lastsnap.jpg?"+new Date().getTime());
+        },600000);
+        setInterval(function(){
+            $("#t80sallsky").attr("src", "/images/AllSkyCurrentImage.JPG?"+new Date().getTime());
+        },600000);
+        setInterval(function(){
+            $("#tascaallsky").attr("src", "/tasca/late_r.png?"+new Date().getTime());
+        },600000);
+        // 	2 - Webcam images every 5 minutes
+        setInterval(function(){
+            $("#t80s-external").attr("src", "/extcam.jpg?"+new Date().getTime());
+        },300000);
+        // 	2 - Cloud watcher every 2 minutes
+        setInterval(function(){
+            $("#cw-cloud").attr("src", "/images/AAG_ImageCloudCondition.png?"+new Date().getTime());
+        },120000);
+        setInterval(function(){
+            $("#cw-light").attr("src", "/images/AAG_ImageDayCondition.png?"+new Date().getTime());
+        },120000);
+        setInterval(function(){
+            $("#cw-rain").attr("src", "/images/AAG_ImageRainCondition.png?"+new Date().getTime());
+        },120000);
+        setInterval(function(){
+            $("#cw-temperature").attr("src", "/images/AAG_ImageTemperature.png?"+new Date().getTime());
+        },120000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+    <!--sun phase script-->
+    <script src="suncalc.js" type="text/javascript"></script>
+
+
+</head>
+<body>
+
+<div align="center"><h1>T80 Telops page</h1></div>
+<div align="center"><h3><font color="red">Red</font> means outdated information. <br>All times are UT</h3></div>
+
+<div class="telescope">
+    <h2>Observatory</h2>
+    <table class="telescope-data">
+        <tr>
+
+
+            <td class="maps-graphs">
+                <center>
+                    <div id="starmap" style="width:400px;height:400px;"></div>
+                </center>
+                <!--<iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
+                <!--src="http://lcogt.net/virtualsky/embed/?longitude=-70&latitude=-16&projection=polar"-->
+                <!--allowTransparency="true"></iframe>-->
+                <img id="teltempgraph" src="http://139.229.20.220/~cacti/graphs/graph_5_1.png"><br>
+
+            </td>
+
+            <td class="data-list">
+
+
+                <table>
+                    <!-- begin clock section -->
+                    <tr>
+                        <td class="observatory-name">TIME</td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">UTC</td>
+                        <td><label id="utc_clock"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">LST</td>
+                        <td><label id="lst_clock">
+                            <script>calculate_clock();</script>
+                        </label></td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="observatory-name">MOON & SUN</td>
+                    </tr>
+
+                    <tr>
+                        <td class="observatory-prop-name">Moon Phase</td>
+                        <td><label id="moon_phase"></label> %
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Moon Altitude</td>
+                        <td><label id="moon_alt"></label> deg
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">
+                            Next Moon Rise
+                        </td>
+                        <td>
+                            <label id="moon_rise"></label>
+                        </td>
+                    <tr>
+                        <td class="observatory-prop-name">
+                            Next Moon Set
+                        </td>
+                        <td>
+                            <label id="moon_set"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Sun Altitude</td>
+                        <td><label id="sun_alt"></label> deg
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">
+                            Next Dawn
+                        </td>
+                        <td>
+                            <label id="sun_dawn"></label>
+                        </td>
+                    <tr>
+                        <td class="observatory-prop-name">
+                            Next Dusk
+                        </td>
+                        <td>
+                            <label id="sun_dusk"></label>
+                        </td>
+                        <script>
+
+                                document.getElementById('moon_phase').innerHTML = 100 * Math.round(100 * SunCalc.getMoonIllumination(new Date()).fraction)/100;
+
+                                var moon = SunCalc.getMoonTimes(new Date(),latitu, longit, 1);
+                                document.getElementById('moon_rise').innerHTML = ("0"+moon.rise.getUTCHours()).slice(-2)+":"+("0"+moon.rise.getUTCMinutes()).slice(-2)+":"+("0"+moon.rise.getUTCSeconds()).slice(-2);
+                                document.getElementById('moon_set').innerHTML = ("0"+moon.set.getUTCHours()).slice(-2)+":"+("0"+moon.set.getUTCMinutes()).slice(-2)+":"+("0"+moon.set.getUTCSeconds()).slice(-2);
+
+                                var sun = SunCalc.getTimes(new Date(), latitu, longit, 1);
+                                document.getElementById('sun_dawn').innerHTML = ("0"+sun.dawn.getUTCHours()).slice(-2)+":"+("0"+sun.dawn.getUTCMinutes()).slice(-2)+":"+("0"+sun.dawn.getUTCSeconds()).slice(-2);
+                                document.getElementById('sun_dusk').innerHTML = ("0"+sun.dusk.getUTCHours()).slice(-2)+":"+("0"+sun.dusk.getUTCMinutes()).slice(-2)+":"+("0"+sun.dusk.getUTCSeconds()).slice(-2);
+
+                                var sunpos = SunCalc.getPosition(new Date(), latitu, longit);
+                                document.getElementById('sun_alt').innerHTML = Math.round(sunpos.altitude * 180 / Math.PI);
+
+                                var moonpos = SunCalc.getMoonPosition(new Date(), latitu, longit);
+                                document.getElementById('moon_alt').innerHTML = Math.round(moonpos.altitude * 180 / Math.PI);
+
+
+
+
+
+
+                        </script>
+                    </tr>
+                    <!-- end clock section -->
+
+                    <!--MOUNT-->
+                    <tr>
+                        <td class="observatory-name">MOUNT</td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">State</td>
+                        <td><label id="telescope_T80S_state"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Position (ra, dec)</td>
+                        <td><label id="telescope_T80S_ra"></label><br><label id="telescope_T80S_dec"></label></td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<td class="observatory-prop-name">Position (alt, az)</td>-->
+                    <!--<td><label id="telescope_alt"></label><br><label id="telescope_az"></label></td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="observatory-prop-name">M1 Fan</td>
+                        <td><label id="fan_M1_state"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">M1 temperature</td>
+                        <td><label id="telescope_T80S_TM1"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">M2 temperature</td>
+                        <td><label id="telescope_T80S_TM2"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Front Ring temperature</td>
+                        <td><label id="telescope_T80S_FrontRing"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Mirror Cover</td>
+                        <td><label id="telescope_T80S_cover"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Last Update</td>
+                        <td><label id="telescope_T80S_last_update"></label></td>
+                    </tr>
+
+                    <!--DOME-->
+                    <tr>
+                        <td class="observatory-name">DOME</td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">State</td>
+                        <td><label id="dome_AshDome_state"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Dome Slit</td>
+                        <td><label id="dome_AshDome_slit"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Dome Flap</td>
+                        <td><label id="dome_AshDome_flap"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Azimuth</td>
+                        <td><label id="dome_AshDome_azimuth"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">East Fan</td>
+                        <td><label id="fan_DomeFanEast_state"></label>/<label id="fan_DomeFanEast_speed"></label></td>
+                    </tr>
+                    <tr>
+                    <td class="observatory-prop-name">West Fan</td>
+                    <td><label id="fan_DomeFanWest_state"></label>/<label id="fan_DomeFanWest_speed"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Last Update</td>
+                        <td><label id="dome_AshDome_last_update"></label></td>
+                    </tr>
+
+
+
+                    <!--CAMERA-->
+                    <tr>
+                    <td class="observatory-name">CAMERA</td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<td class="observatory-prop-name">State</td>-->
+                    <!--<td><label id="camera_T80Cam_state"></label></td>-->
+                    <!--</tr>-->
+
+                    <tr>
+                    <td class="observatory-prop-name">Temperature</td>
+                    <td><label id="camera_T80Cam_temperature"></label></td>
+                    </tr>
+
+                    <tr>
+                    <td class="observatory-prop-name">Pressure</td>
+                    <td><label id="camera_T80Cam_pressure"></label></td>
+                    </tr>
+
+                    <tr>
+                    <td class="observatory-prop-name">Last Update</td>
+                    <td><label id="camera_T80Cam_last_update" ></label></td>
+                    </tr>
+
+                    <!--SCHEDULERS-->
+                    <tr>
+                        <td class="observatory-name">SCHEDULERS</td>
+                    </tr>
+
+                    <tr>
+                        <td class="observatory-prop-name">SEQUENTIAL</td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">State</td>
+                        <td><label id="scheduler_state_sequential_state"></label></td>
+                    </tr>
+
+                    <tr>
+                        <td class="observatory-prop-name">Last message</td>
+                        <td><label id="scheduler_msg_sequential_message"></label></td>
+                    </tr>
+
+                    <tr>
+                        <td class="observatory-prop-name">State Update</td>
+                        <td><label id="scheduler_state_sequential_last_update"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Message Update</td>
+                        <td><label id="scheduler_msg_sequential_last_update"></label></td>
+                    </tr>
+
+                </table>
+            </td>
+
+        </tr>
+    </table>
+</div>
+
+<div align="center">
+    <h2>Weather</h2>
+
+    <table>
+        <!--class="weather-data"-->
+        <tr>
+            <td class="maps-graphs">
+                T80 - Outside<br>
+                <img id="t80s-external" src="/extcam.jpg" , width=640, height=480><br>
+
+                T80<br>
+                <img id="t80sallsky" src="/images/AllSkyCurrentImage.JPG" , width=500, height=350><br>
+
+                TOLOLO<br>
+                <img id="tascaallsky" src="/tasca/late_r.png" , width=512, height=512><br>
+
+                LCOGT<br>
+                <img id="lcogtallsky" src="http://lcogt.net/camera/data/lsc/allsky/lastsnap.jpg" , width=500,
+                     height=350><br>
+
+                <!--<img id="weathergraph" src="http://139.229.20.220/~cacti/graphs/graph_5_5.png"><br>-->
+            </td>
+
+
+            <td class="data-list">
+                <table>
+
+                    <!--T80-->
+                    <tr>
+                        <td class="weather-name">T80</td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Temperature</td>
+                        <td><label id="weather_wxt520_temperature"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Humidity</td>
+                        <td><label id="weather_wxt520_humidity"></label></td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<td class="weather-prop-name">Sky Transparency</td>-->
+                    <!--<td><label id="weather_wxt520_sky_transparency"></label></td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="weather-prop-name">Wind Speed</td>
+                        <td><label id="weather_wxt520_wind_speed"></label><br><label
+                                id="weather_wxt520_wind_direction"></label></td>
+                    </tr>
+
+                    <tr>
+                        <td class="weather-prop-name">Sky Transparency</td>
+                        <td><label id="weather_aag_sky_transparency"></label></td>
+                    </tr>
+
+                    <tr>
+                        <td class="weather-prop-name">Pressure</td>
+                        <td><label id="weather_wxt520_pressure"></label></td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<td class="weather-prop-name">Rain</td>-->
+                    <!--<td><label id="weather_wxt520_rain"></label></td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="weather-prop-name">Weather Station Last Update</td>
+                        <td><label id="weather_wxt520_last_update"></label></td>
+                    </tr>
+
+                    <tr>
+                        <td class="weather-prop-name">Transparency Last Update</td>
+                        <td><label id="weather_aag_last_update"></label></td>
+                    </tr>
+
+
+                    <!--BLANCO Seeing monitor-->
+                    <tr>
+                        <td class="weather-name">Seeing Monitor</td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Seeing</td>
+                        <td><label id="seeing_blanco_seeing_seeing"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Last Update</td>
+                        <td><label id="seeing_blanco_seeing_last_update"></label></td>
+                    </tr>
+
+
+                    <!--RASICAM-->
+                    <tr>
+                        <td class="weather-name">RASICAM</td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Sky Transparency</td>
+                        <td><label id="weather_rasicam_sky_transparency"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Last Update</td>
+                        <td><label id="weather_rasicam_last_update"></label></td>
+                    </tr>
+                </table>
+
+                <!--Cloud Watcher-->
+                <!--<table>-->
+                <!--<tr>-->
+                <!--<td class="weather-name">Cloud sensor CW</td>-->
+                <!--<td class="weather-name">Luminosity Sensor CW</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td><img id="cw-cloud" src="images/AAG_ImageCloudCondition.png"></td>-->
+                <!--<td><img id="cw-light" src="images/AAG_ImageDayCondition.png"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td class="weather-name">Rain Sensor CW</td>-->
+                <!--<td class="weather-name">Temperature sensor CW</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td><img id="cw-rain" src="images/AAG_ImageRainCondition.png"></td>-->
+                <!--<td><img id="cw-temperature" src="images/AAG_ImageTemperature.png"></td>-->
+                <!--</tr>-->
+                <!--</table>-->
+                <!--END Cloud Watcher-->
+
+                <!--Horizontal divider-->
+                <hr>
+                <table>
+
+                    <!--LCOGT Weather Stations-->
+                    <tr>
+                        <td class="weather-name">LCOGT</td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">OK to open?</td>
+                        <td><label id="weather_lcogt_ok_to_open"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Temperature</td>
+                        <td><label id="weather_lcogt_temperature"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Dew Point</td>
+                        <td><label id="weather_lcogt_dew_point"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Humidity</td>
+                        <td><label id="weather_lcogt_humidity"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Sky Transparency</td>
+                        <td><label id="weather_lcogt_sky_transparency"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Wind Speed</td>
+                        <td><label id="weather_lcogt_wind_speed"></label><br><label
+                                id="weather_lcogt_wind_direction"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Last Update</td>
+                        <td><label id="weather_lcogt_last_update"></label></td>
+                    </tr>
+
+                    <!--BLANCO Weather station-->
+                    <tr>
+                        <td class="weather-name">BLANCO</td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Temperature</td>
+                        <td><label id="weather_blanco_ws_temperature"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Dew Point</td>
+                        <td><label id="weather_blanco_ws_dew_point"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Humidity</td>
+                        <td><label id="weather_blanco_ws_humidity"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Wind Speed</td>
+                        <td><label id="weather_blanco_ws_wind_speed"></label><br><label
+                                id="weather_blanco_ws_wind_direction"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="weather-prop-name">Last Update</td>
+                        <td><label id="weather_blanco_ws_last_update"></label></td>
+                    </tr>
+
+
+                </table>
+            </td>
+
+        </tr>
+    </table>
+
+</div>
+
+<!--<div align="center">-->
+<!--<h2>Lights</h2>-->
+<!--<table class="lights-data">-->
+<!--<tr>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--<td>Camera 1</td>-->
+<!--<td>ON</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</div>-->
+
+</body>
+</html>

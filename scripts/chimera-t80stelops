@@ -1,4 +1,8 @@
+#!/usr/bin/env python
 import sys
+
+import requests
+from bottle import route, run, static_file, Response, request, response
 from chimera.core.cli import ChimeraCLI, action
 
 
@@ -9,14 +13,61 @@ class ChimeraTelops(ChimeraCLI):
         self.addHelpGroup("TO", "Telops")
         self.addHelpGroup("COMMANDS", "Commands")
 
+        self.addParameters(
+            dict(name="listen_ip", short="i", type="string", default="localhost", helpGroup="COMMANDS", help="Bind host/ip"))
+        self.addParameters(
+            dict(name="http_port", short="n", type="int", default=8080, helpGroup="COMMANDS", help="Bind port"))
+        self.addParameters(
+            dict(name="path", short="f", type="string", default="/mnt/public/allsky/",
+                 helpGroup="COMMANDS", help="Path to images files."))
+        self.addParameters(
+            dict(name="tasca_www", short="t", type="string", default="http://139.229.115.232/TASCA",
+                 helpGroup="COMMANDS", help="Path to images files."))
+
+
+
+
         self.addController(name="t80stelops", cls="T80STelops", required=True, helpGroup="TO",
                            help="Telops Controller")
 
-        @action(short='s', help="Start Server", helpGroup="COMMANDS")
-        def start():
-            print 'caca'
+    def get_source_rsp(self, url):
+        # Fetch the URL, and stream it back
+        return requests.get(url, stream=True)#, params=request.args)
 
+    @action(short='s', help="Start Server", helpGroup="COMMANDS")
+    def start(self, options):
+        @route('/telops')
+        def telops_data():
+            return self.t80stelops.get_data()
 
+        @route('/images/<filename:re:.*\.png>')
+        def send_image(filename):
+            return static_file(filename, root=options.path, mimetype='image/png')
+
+        @route('/images/<filename:re:.*\.JPG>')
+        def send_image(filename):
+            return static_file(filename, root=options.path, mimetype='image/jpeg')
+
+        @route('/tasca/<filename:re:.*\.png>')
+        def proxy(filename):
+            """Fetches the specified URL and streams it out to the client.
+            If the request was referred by the proxy itself (e.g. this is an image fetch for
+            a previously proxied HTML page), then the original Referer is passed."""
+            r = self.get_source_rsp("%s/%s" % (options.tasca_www, filename))
+
+            def generate():
+                for chunk in r.iter_content(1024):  # CHUNK_SIZE
+                    yield chunk
+
+            response.content_type = "image/png"
+
+            return Response(generate())
+
+        @route('/images/<filename:re:.*\.FIT>')
+        def send_image(filename):
+            return static_file(filename, root=options.path, mimetype="image/fits")
+
+        run(host=options.listen_ip, port=options.http_port)
 
 
 def main():
