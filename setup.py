@@ -5,6 +5,7 @@ setup(
     version='0.0.1',
     packages=['chimera_t80stelops', 'chimera_t80stelops.controllers'],
     scripts=['scripts/chimera-t80stelops'],
+    install_requires=["pymodbus", "requests", "bottle"],
     url='http://github.com/astroufsc/chimera-t80stelops',
     license='GPL v2',
     author='William Schoenell',
