@@ -4,7 +4,7 @@ import datetime
 
 from chimera.core.callback import callback
 from chimera.core.chimeraobject import ChimeraObject
-from chimera.core.exceptions import ObjectNotFoundException
+from chimera.core.exceptions import ObjectNotFoundException, ChimeraException
 from chimera.core.manager import Manager
 from pymodbus.exceptions import ConnectionException
 
@@ -149,20 +149,23 @@ class T80STelops(ChimeraObject):
                 telescope = self.get_instrument(tel)
                 try:
                     if telescope:
-                        pos = telescope.getPositionRaDec()
-                        telname = tel.split('/')[-1]
-                        self._data['telescope_%s' % telname] = {'ra': str(pos.ra),
-                                                                'dec': str(pos.dec),
-                                                                'ra_deg': float(pos.ra.D),
-                                                                'dec_deg': float(pos.dec.D),
-                                                                'state': 'Tracking' if telescope.isTracking() else 'Stopped',
-                                                                'cover': 'Open' if telescope.isCoverOpen() else 'Closed',
-                                                                'last_update': datetime.datetime.utcnow().strftime(
-                                                                    '%Y-%m-%d %H:%M:%S')}
-                        if telname == "T80S":
-                            for sensor in telescope.getSensors():
-                                if sensor[0] in ('TM1', 'TM2', 'FrontRing', 'TubeRod'):
-                                    self._data['telescope_%s' % telname][sensor[0]] = '%.2f deg_C' % sensor[1]
+                        try:
+                            pos = telescope.getPositionRaDec()
+                            telname = tel.split('/')[-1]
+                            self._data['telescope_%s' % telname] = {'ra': str(pos.ra),
+                                                                    'dec': str(pos.dec),
+                                                                    'ra_deg': float(pos.ra.D),
+                                                                    'dec_deg': float(pos.dec.D),
+                                                                    'state': 'Tracking' if telescope.isTracking() else 'Stopped',
+                                                                    'cover': 'Open' if telescope.isCoverOpen() else 'Closed',
+                                                                    'last_update': datetime.datetime.utcnow().strftime(
+                                                                        '%Y-%m-%d %H:%M:%S')}
+                            if telname == "T80S":
+                                for sensor in telescope.getSensors():
+                                    if sensor[0] in ('TM1', 'TM2', 'FrontRing', 'TubeRod'):
+                                        self._data['telescope_%s' % telname][sensor[0]] = '%.2f deg_C' % sensor[1]
+                        except ChimeraException:
+                            pass
                 except TypeError:
                     pass
 
