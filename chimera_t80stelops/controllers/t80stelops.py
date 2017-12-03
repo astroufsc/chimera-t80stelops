@@ -177,10 +177,15 @@ class T80STelops(ChimeraObject):
                     try:
                         self._data['dome_%s' % dom.split('/')[-1]] = {'azimuth': str(pos),
                                                                       'state': str(dome.getMode()),
-                                                                      'flap': 'OPEN' if dome.isFlapOpen() else 'CLOSED',
-                                                                      'slit': 'OPEN' if dome.isSlitOpen() else 'CLOSED',
                                                                       'last_update': datetime.datetime.utcnow().strftime(
                                                                           '%Y-%m-%d %H:%M:%S')}
+                        try:
+                            self._data['dome_%s' % dom.split('/')[-1]].update(
+                                {'slit': 'OPEN' if dome.isSlitOpen() else 'CLOSED'})
+                            self._data['dome_%s' % dom.split('/')[-1]].update(
+                                {'flap': 'OPEN' if dome.isFlapOpen() else 'CLOSED'})
+                        except NotImplementedError:
+                            pass
                     except TypeError:
                         pass
         if self["cameras"] is not None:
