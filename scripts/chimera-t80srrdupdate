@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+import os
+
+from chimera.core.manager import Manager
+
+m = Manager()
+
+data = dict()
+try:
+    telescope = m.getProxy("192.168.30.10:7666/AstelcoTelescope/T80S")
+    for sensor in telescope.getSensors():
+        if sensor[0] in ('TM1', 'TM2', 'FrontRing', 'TubeRod'):
+            data[sensor[0]] = '%.2f' % sensor[1]
+except:
+    pass
+
+try:
+    weather_station = m.getProxy("192.168.20.122:7666/Vaisala/wxt520")
+    data['External'] = "%.2f" % weather_station.temperature().value
+    data['DewPoint'] = "%.2f" % weather_station.dew_point().value
+except:
+    pass
+
+for aux in ('TM1', 'TM2', 'FrontRing', 'TubeRod', 'External', 'DewPoint'):
+    if aux not in data:
+        data[aux] = "U"  # Set as U when datapoint is Unknown
+
+cmd = "rrdtool update ~/.chimera/temperatures.rrd N:{TM1}:{TM2}:{FrontRing}:{TubeRod}:{External}:{DewPoint}".format(**data)
+print cmd
+
+os.system(os.path.expanduser(cmd))

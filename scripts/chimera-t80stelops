@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 
+import os
 import requests
 from bottle import route, run, static_file, Response, request, response
 from chimera.core.cli import ChimeraCLI, action
@@ -20,6 +21,9 @@ class ChimeraTelops(ChimeraCLI):
         self.addParameters(
             dict(name="path", short="f", type="string", default="/mnt/public/allsky/",
                  helpGroup="COMMANDS", help="Path to images files."))
+        self.addParameters(
+            dict(name="rrdpath", short="r", type="string", default=os.path.expanduser("~/.chimera/"),
+                 helpGroup="COMMANDS", help="Path to RRD graphs."))
         self.addParameters(
             dict(name="tasca_www", short="t", type="string", default="http://139.229.115.232/TASCA",
                  helpGroup="COMMANDS", help="Path to images files."))
@@ -43,6 +47,10 @@ class ChimeraTelops(ChimeraCLI):
         @route('/images/<filename:re:.*\.png>')
         def send_image(filename):
             return static_file(filename, root=options.path, mimetype='image/png')
+
+        @route('/rrd/<filename:re:.*\.png>')
+        def send_image(filename):
+            return static_file(filename, root=options.rrdpath, mimetype='image/png')
 
         @route('/images/<filename:re:.*\.JPG>')
         def send_image(filename):

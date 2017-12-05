@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+rrdtool graph ~/.chimera/temperatures.png \
+--title "Telescope Temperatures" \
+--vertical-label "Temperature oC" \
+--width "400" \
+--height "100" \
+--start end-2d \
+"DEF:M1=$HOME/.chimera/temperatures.rrd:M1:AVERAGE" \
+"DEF:M2=$HOME/.chimera/temperatures.rrd:M2:AVERAGE" \
+"DEF:FrontRing=$HOME/.chimera/temperatures.rrd:FrontRing:AVERAGE" \
+"DEF:TubeRod=$HOME/.chimera/temperatures.rrd:TubeRod:AVERAGE" \
+"DEF:External=$HOME/.chimera/temperatures.rrd:External:AVERAGE" \
+"DEF:DewPoint=$HOME/.chimera/temperatures.rrd:DewPoint:AVERAGE" \
+"AREA:External#404040:External" \
+"AREA:DewPoint#808080:Dew" \
+"LINE1:M1#FF0000:M1" \
+"LINE1:M2#0000FF:M2" \
+"LINE1:FrontRing#00FF00:Front Ring" \
+"LINE1:TubeRod#CC33FF:Tube Rod"
