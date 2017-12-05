@@ -58,7 +58,7 @@
     <script>
         // 	1 - Graphs every minute
         setInterval(function(){
-            $("#teltempgraph").attr("src", "/~cacti/graphs/graph_5_1.png?"+new Date().getTime());
+            $("#teltempgraph").attr("src", "/rrd/temperatures.png?"+new Date().getTime());
         },60000);
         // 	2 - Allsky images every 10 minutes
         setInterval(function(){
@@ -129,7 +129,7 @@
                 <!--<iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
                 <!--src="http://lcogt.net/virtualsky/embed/?longitude=-70&latitude=-16&projection=polar"-->
                 <!--allowTransparency="true"></iframe>-->
-                <img id="teltempgraph" src="http://139.229.20.220/~cacti/graphs/graph_5_1.png"><br>
+                <img id="teltempgraph" src="/rrd/temperatures.png"><br>
 
             </td>
 
