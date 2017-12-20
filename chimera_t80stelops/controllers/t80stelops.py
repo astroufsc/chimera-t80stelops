@@ -157,9 +157,12 @@ class T80STelops(ChimeraObject):
                                                                     'ra_deg': float(pos.ra.D),
                                                                     'dec_deg': float(pos.dec.D),
                                                                     'state': 'Tracking' if telescope.isTracking() else 'Stopped',
-                                                                    'cover': 'Open' if telescope.isCoverOpen() else 'Closed',
                                                                     'last_update': datetime.datetime.utcnow().strftime(
                                                                         '%Y-%m-%d %H:%M:%S')}
+                            try:
+                                self._data.update({'cover': 'Open' if telescope.isCoverOpen() else 'Closed'})
+                            except AttributeError:
+                                pass
                             if telname == "T80S":
                                 for sensor in telescope.getSensors():
                                     if sensor[0] in ('TM1', 'TM2', 'FrontRing', 'TubeRod'):
@@ -211,6 +214,8 @@ class T80STelops(ChimeraObject):
                     try:
                         self._data['fan_%s' % fanname] = {'state': 'ON' if f.isSwitchedOn() else 'OFF'}
                     except ConnectionException:
+                        continue
+                    except AttributeError:
                         continue
                     try:
                         self._data['fan_%s' % fanname]['speed'] = f.getRotation()
