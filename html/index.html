@@ -67,8 +67,11 @@
         setInterval(function(){
             $("#t80sallsky").attr("src", "/images/AllSkyCurrentImage.JPG?"+new Date().getTime());
         },600000);
+ //       setInterval(function(){
+ //           $("#tascaallsky").attr("src", "/tasca/late_r.png?"+new Date().getTime());
+ //       },600000);
         setInterval(function(){
-            $("#tascaallsky").attr("src", "/tasca/late_r.png?"+new Date().getTime());
+            $("#geminiallsky").attr("src", "http://www.gemini.edu/sciops/telescopes-and-sites/weather/cerro-pachon/cameras/img.png"+new Date().getTime());
         },600000);
         // 	2 - Webcam images every 5 minutes
         setInterval(function(){
@@ -377,6 +380,10 @@
 
                 <!--TOLOLO<br>-->
                 <!--<img id="tascaallsky" src="/tasca/late_r.png" , width=512, height=512><br>-->
+
+                GEMINI @ PACHÓN<br>
+                <img id="geminiallsky" src="http://www.gemini.edu/sciops/telescopes-and-sites/weather/cerro-pachon/cameras/img.png" , width=512, height=512><br>
+
 
                 LCOGT<br>
                 <img id="lcogtallsky" src="http://lcogt.net/camera/data/lsc/allsky/lastsnap.jpg" , width=500,
