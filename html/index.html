@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>T80 telops page</title>
+    <title>OPD 40cm telops page</title>
     <link rel="stylesheet" type="text/css" href="telops.css">
 
     <!-- common variables to all javascript like lat, long -->
@@ -26,11 +26,15 @@
                 planetarium.addPointer({
                                             'ra': 0,
                                             'dec': 0,
-                                            'label':'T80',
+                                            'label':'40cm',
                                             'colour':'rgb(255,220,220)'
                         });
                 telescope_pointer = planetarium.pointers[0]
         });
+
+
+
+
 
 
 
@@ -62,31 +66,29 @@
         },60000);
         // 	2 - Allsky images every 10 minutes
         setInterval(function(){
-            $("#lcogtallsky").attr("src", "http://lcogt.net/camera/data/lsc/allsky/lastsnap.jpg?"+new Date().getTime());
-        },600000);
-        setInterval(function(){
-            $("#t80sallsky").attr("src", "/images/AllSkyCurrentImage.JPG?"+new Date().getTime());
-        },600000);
-        setInterval(function(){
-            $("#tascaallsky").attr("src", "/tasca/late_r.png?"+new Date().getTime());
+            $("#allsky").attr("src", "http://200.131.64.207/allsky/imagens340/AllSkyCurrentImage.JPG?"+new Date().getTime());
         },600000);
         // 	2 - Webcam images every 5 minutes
         setInterval(function(){
-            $("#t80s-external").attr("src", "/extcam.jpg?"+new Date().getTime());
+            $("#internal-cam").attr("src", "/intcam.jpg?"+new Date().getTime());
         },300000);
         // 	2 - Cloud watcher every 2 minutes
         setInterval(function(){
-            $("#cw-cloud").attr("src", "/images/AAG_ImageCloudCondition.png?"+new Date().getTime());
+            $("#cw-cloud").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageCloudCondition.png?"+new Date().getTime());
         },120000);
         setInterval(function(){
-            $("#cw-light").attr("src", "/images/AAG_ImageDayCondition.png?"+new Date().getTime());
+            $("#cw-light").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageDayCondition.png?"+new Date().getTime());
         },120000);
         setInterval(function(){
-            $("#cw-rain").attr("src", "/images/AAG_ImageRainCondition.png?"+new Date().getTime());
+            $("#cw-rain").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageRainCondition.png?"+new Date().getTime());
         },120000);
         setInterval(function(){
-            $("#cw-temperature").attr("src", "/images/AAG_ImageTemperature.png?"+new Date().getTime());
+            $("#cw-temperature").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageTemperature.png?"+new Date().getTime());
         },120000);
+
+
+
+
 
 
 
@@ -113,7 +115,7 @@
 </head>
 <body>
 
-<div align="center"><h1>T80 Telops page</h1></div>
+<div align="center"><h1>OPD 40cm Telops page</h1></div>
 <div align="center"><h3><font color="red">Red</font> means outdated information. <br>All times are UT</h3></div>
 
 <div class="telescope">
@@ -135,6 +137,20 @@
 
             <td class="data-list">
 
+
+                <!--CONTROL-->
+                <table>
+                    <tr>
+                        <td class="caution-name">TELESCOPE CONTROL</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <iframe src="control/" style="border:none;"></iframe>
+                        </td>
+                    </tr>
+
+                <!--END OF CONTROL-->
+                </table>
 
                 <table>
                     <!-- begin clock section -->
@@ -224,6 +240,10 @@
 
 
 
+
+
+
+
                         </script>
                     </tr>
                     <!-- end clock section -->
@@ -234,39 +254,20 @@
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">State</td>
-                        <td><label id="telescope_T80S_state"></label></td>
+                        <td><label id="telescope_paramount_state"></label></td>
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">Position (ra, dec)</td>
-                        <td><label id="telescope_T80S_ra"></label><br><label id="telescope_T80S_dec"></label></td>
+                        <td><label id="telescope_paramount_ra"></label><br><label id="telescope_paramount_dec"></label>
+                        </td>
                     </tr>
-                    <!--<tr>-->
-                    <!--<td class="observatory-prop-name">Position (alt, az)</td>-->
-                    <!--<td><label id="telescope_alt"></label><br><label id="telescope_az"></label></td>-->
-                    <!--</tr>-->
                     <tr>
                         <td class="observatory-prop-name">M1 Fan</td>
                         <td><label id="fan_M1_state"></label></td>
                     </tr>
                     <tr>
-                        <td class="observatory-prop-name">M1 temperature</td>
-                        <td><label id="telescope_T80S_TM1"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="observatory-prop-name">M2 temperature</td>
-                        <td><label id="telescope_T80S_TM2"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="observatory-prop-name">Front Ring temperature</td>
-                        <td><label id="telescope_T80S_FrontRing"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="observatory-prop-name">Mirror Cover</td>
-                        <td><label id="telescope_T80S_cover"></label></td>
-                    </tr>
-                    <tr>
                         <td class="observatory-prop-name">Last Update</td>
-                        <td><label id="telescope_T80S_last_update"></label></td>
+                        <td><label id="telescope_paramount_last_update"></label></td>
                     </tr>
 
                     <!--DOME-->
@@ -275,84 +276,61 @@
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">State</td>
-                        <td><label id="dome_AshDome_state"></label></td>
+                        <td><label id="dome_dome40_state"></label></td>
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">Dome Slit</td>
-                        <td><label id="dome_AshDome_slit"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="observatory-prop-name">Dome Flap</td>
-                        <td><label id="dome_AshDome_flap"></label></td>
+                        <td><label id="dome_dome40_slit"></label></td>
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">Azimuth</td>
-                        <td><label id="dome_AshDome_azimuth"></label></td>
+                        <td><label id="dome_dome40_azimuth"></label></td>
                     </tr>
-                    <tr>
-                        <td class="observatory-prop-name">East Fan</td>
-                        <td><label id="fan_DomeFanEast_state"></label>/<label id="fan_DomeFanEast_speed"></label></td>
+                    <td class="observatory-prop-name">Last Update</td>
+                    <td><label id="dome_dome40_last_update"></label></td>
                     </tr>
-                    <tr>
-                    <td class="observatory-prop-name">West Fan</td>
-                    <td><label id="fan_DomeFanWest_state"></label>/<label id="fan_DomeFanWest_speed"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="observatory-prop-name">Last Update</td>
-                        <td><label id="dome_AshDome_last_update"></label></td>
-                    </tr>
-
 
 
                     <!--CAMERA-->
                     <tr>
-                    <td class="observatory-name">CAMERA</td>
+                        <td class="observatory-name">CAMERA</td>
                     </tr>
                     <!--<tr>-->
                     <!--<td class="observatory-prop-name">State</td>-->
-                    <!--<td><label id="camera_T80Cam_state"></label></td>-->
+                    <!--<td><label id="camera_apogee_state"></label></td>-->
                     <!--</tr>-->
 
                     <tr>
-                    <td class="observatory-prop-name">Temperature</td>
-                    <td><label id="camera_T80Cam_temperature"></label></td>
+                        <td class="observatory-prop-name">Temperature</td>
+                        <td><label id="camera_apogee_AltaU16M_temperature"></label></td>
                     </tr>
 
                     <tr>
-                    <td class="observatory-prop-name">Pressure</td>
-                    <td><label id="camera_T80Cam_pressure"></label></td>
-                    </tr>
-
-                    <tr>
-                    <td class="observatory-prop-name">Last Update</td>
-                    <td><label id="camera_T80Cam_last_update" ></label></td>
+                        <td class="observatory-prop-name">Last Update</td>
+                        <td><label id="camera_apogee_AltaU16M_last_update"></label></td>
                     </tr>
 
                     <!--SCHEDULERS-->
                     <tr>
-                        <td class="observatory-name">SCHEDULERS</td>
-                    </tr>
-
-                    <tr>
-                        <td class="observatory-prop-name">SEQUENTIAL</td>
+                        <td class="observatory-name">SCHEDULER</td>
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">State</td>
-                        <td><label id="scheduler_state_sequential_state"></label></td>
+                        <td><label id="scheduler_state_lna40sched_state"></label></td>
                     </tr>
 
                     <tr>
                         <td class="observatory-prop-name">Last message</td>
-                        <td><label id="scheduler_msg_sequential_message"></label></td>
+                        <td><label id="scheduler_msg_lna40sched_message"></label></td>
                     </tr>
 
                     <tr>
                         <td class="observatory-prop-name">State Update</td>
-                        <td><label id="scheduler_state_sequential_last_update"></label></td>
+                        <td><label id="scheduler_state_lna40sched_last_update"></label></td>
                     </tr>
                     <tr>
                         <td class="observatory-prop-name">Message Update</td>
-                        <td><label id="scheduler_msg_sequential_last_update"></label></td>
+                        <td><label id="scheduler_msg_lna40sched_last_update"></label></td>
                     </tr>
 
                 </table>
@@ -369,18 +347,20 @@
         <!--class="weather-data"-->
         <tr>
             <td class="maps-graphs">
-                T80 - Outside<br>
-                <img id="t80s-external" src="/extcam.jpg" , width=640, height=480><br>
 
-                T80<br>
-                <img id="t80sallsky" src="/images/AllSkyCurrentImage.JPG" , width=500, height=350><br>
+                All Sky<br>
+                <img id="allsky" src="http://200.131.64.207/allsky/imagens340/AllSkyCurrentImage.JPG" , width=500,
+                     height=350><br>
+
+                Dome Cam (<a href="http://200.131.64.169/jview.html" , target="_video">Open VIDEO</a>)<br>
+                <img id="internal-cam" src="/intcam.jpg" , width=640, height=480><br>
 
                 <!--TOLOLO<br>-->
                 <!--<img id="tascaallsky" src="/tasca/late_r.png" , width=512, height=512><br>-->
 
-                LCOGT<br>
-                <img id="lcogtallsky" src="http://lcogt.net/camera/data/lsc/allsky/lastsnap.jpg" , width=500,
-                     height=350><br>
+                <!--LCOGT<br>-->
+                <!--<img id="lcogtallsky" src="http://lcogt.net/camera/data/lsc/allsky/lastsnap.jpg" , width=500,-->
+                <!--height=350><br>-->
 
                 <!--<img id="weathergraph" src="http://139.229.20.220/~cacti/graphs/graph_5_5.png"><br>-->
             </td>
@@ -389,26 +369,26 @@
             <td class="data-list">
                 <table>
 
-                    <!--T80-->
+                    <!-- 1.60m -->
                     <tr>
-                        <td class="weather-name">T80</td>
+                        <td class="weather-name">OPD 1.60m</td>
                     </tr>
                     <tr>
                         <td class="weather-prop-name">Temperature</td>
-                        <td><label id="weather_wxt520_temperature"></label></td>
+                        <td><label id="weather_opd160_temperature"></label></td>
                     </tr>
                     <tr>
                         <td class="weather-prop-name">Humidity</td>
-                        <td><label id="weather_wxt520_humidity"></label></td>
+                        <td><label id="weather_opd160_humidity"></label></td>
                     </tr>
                     <!--<tr>-->
                     <!--<td class="weather-prop-name">Sky Transparency</td>-->
-                    <!--<td><label id="weather_wxt520_sky_transparency"></label></td>-->
+                    <!--<td><label id="weather_opd160_sky_transparency"></label></td>-->
                     <!--</tr>-->
                     <tr>
                         <td class="weather-prop-name">Wind Speed</td>
-                        <td><label id="weather_wxt520_wind_speed"></label><br><label
-                                id="weather_wxt520_wind_direction"></label></td>
+                        <td><label id="weather_opd160_wind_speed"></label><br><label
+                                id="weather_opd160_wind_direction"></label></td>
                     </tr>
 
                     <tr>
@@ -418,15 +398,15 @@
 
                     <tr>
                         <td class="weather-prop-name">Pressure</td>
-                        <td><label id="weather_wxt520_pressure"></label></td>
+                        <td><label id="weather_opd160_pressure"></label></td>
                     </tr>
                     <!--<tr>-->
                     <!--<td class="weather-prop-name">Rain</td>-->
-                    <!--<td><label id="weather_wxt520_rain"></label></td>-->
+                    <!--<td><label id="weather_opd160_rain"></label></td>-->
                     <!--</tr>-->
                     <tr>
                         <td class="weather-prop-name">Weather Station Last Update</td>
-                        <td><label id="weather_wxt520_last_update"></label></td>
+                        <td><label id="weather_opd160_last_update"></label></td>
                     </tr>
 
                     <tr>
@@ -434,125 +414,62 @@
                         <td><label id="weather_aag_last_update"></label></td>
                     </tr>
 
-
-                    <!--BLANCO Seeing monitor-->
+                    <!--Weather Graphs-->
                     <tr>
-                        <td class="weather-name">Seeing Monitor</td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Seeing</td>
-                        <td><label id="seeing_blanco_seeing_seeing"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Last Update</td>
-                        <td><label id="seeing_blanco_seeing_last_update"></label></td>
+                        <td class="weather-name">Temperature</td>
+                        <td class="weather-name">Humidity</td>
                     </tr>
 
+                    <tr>
+                        <td><img id="temperature"
+                                 src="http://200.131.64.185/clima/Images/Profile1/OutsideTempHistory.gif"></td>
+                        <td><img id="humidity"
+                                 src="http://200.131.64.185/clima/Images/Profile1/OutsideHumidityHistory.gif"></td>
+                    </tr>
 
-                    <!--RASICAM-->
                     <tr>
-                        <td class="weather-name">RASICAM</td>
+                        <td class="weather-name">Leaf Wetness</td>
+                        <td class="weather-name">UV</td>
+                    </tr>
+
+                    <tr>
+                        <td><img id="leaf" src="http://200.131.64.185/clima/Images/Profile1/LeafWet1History.gif"></td>
+                        <td><img id="uv" src="http://200.131.64.185/clima/Images/Profile1/UVHistory.gif"></td>
+                    </tr>
+                    <!--Weather Graphs END-->
+
+
+                    <!--Cloud Watcher-->
+                    <!--<table>-->
+                    <tr>
+                        <td class="weather-name">Cloud sensor CW</td>
+                        <td class="weather-name">Luminosity Sensor CW</td>
                     </tr>
                     <tr>
-                        <td class="weather-prop-name">Sky Transparency</td>
-                        <td><label id="weather_rasicam_sky_transparency"></label></td>
+                        <td><img id="cw-cloud"
+                                 src="http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageCloudCondition.png"></td>
+                        <td><img id="cw-light"
+                                 src="http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageDayCondition.png"></td>
                     </tr>
                     <tr>
-                        <td class="weather-prop-name">Last Update</td>
-                        <td><label id="weather_rasicam_last_update"></label></td>
+                        <td class="weather-name">Rain Sensor CW</td>
+                        <td class="weather-name">Temperature sensor CW</td>
+                    </tr>
+                    <tr>
+                        <td><img id="cw-rain"
+                                 src="http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageRainCondition.png"></td>
+                        <td><img id="cw-temperature"
+                                 src="http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageTemperature.png"></td>
+                    </tr>
+                    <!--</table>-->
+                    <!--END Cloud Watcher-->
+
+                    <!--Horizontal divider-->
+
+                    </td>
+
                     </tr>
                 </table>
-
-                <!--Cloud Watcher-->
-                <!--<table>-->
-                <!--<tr>-->
-                <!--<td class="weather-name">Cloud sensor CW</td>-->
-                <!--<td class="weather-name">Luminosity Sensor CW</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<td><img id="cw-cloud" src="images/AAG_ImageCloudCondition.png"></td>-->
-                <!--<td><img id="cw-light" src="images/AAG_ImageDayCondition.png"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<td class="weather-name">Rain Sensor CW</td>-->
-                <!--<td class="weather-name">Temperature sensor CW</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<td><img id="cw-rain" src="images/AAG_ImageRainCondition.png"></td>-->
-                <!--<td><img id="cw-temperature" src="images/AAG_ImageTemperature.png"></td>-->
-                <!--</tr>-->
-                <!--</table>-->
-                <!--END Cloud Watcher-->
-
-                <!--Horizontal divider-->
-                <hr>
-                <table>
-
-                    <!--LCOGT Weather Stations-->
-                    <tr>
-                        <td class="weather-name">LCOGT</td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">OK to open?</td>
-                        <td><label id="weather_lcogt_ok_to_open"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Temperature</td>
-                        <td><label id="weather_lcogt_temperature"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Dew Point</td>
-                        <td><label id="weather_lcogt_dew_point"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Humidity</td>
-                        <td><label id="weather_lcogt_humidity"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Sky Transparency</td>
-                        <td><label id="weather_lcogt_sky_transparency"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Wind Speed</td>
-                        <td><label id="weather_lcogt_wind_speed"></label><br><label
-                                id="weather_lcogt_wind_direction"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Last Update</td>
-                        <td><label id="weather_lcogt_last_update"></label></td>
-                    </tr>
-
-                    <!--BLANCO Weather station-->
-                    <tr>
-                        <td class="weather-name">BLANCO</td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Temperature</td>
-                        <td><label id="weather_blanco_ws_temperature"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Dew Point</td>
-                        <td><label id="weather_blanco_ws_dew_point"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Humidity</td>
-                        <td><label id="weather_blanco_ws_humidity"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Wind Speed</td>
-                        <td><label id="weather_blanco_ws_wind_speed"></label><br><label
-                                id="weather_blanco_ws_wind_direction"></label></td>
-                    </tr>
-                    <tr>
-                        <td class="weather-prop-name">Last Update</td>
-                        <td><label id="weather_blanco_ws_last_update"></label></td>
-                    </tr>
-
-
-                </table>
-            </td>
-
-        </tr>
     </table>
 
 </div>

@@ -1,14 +1,12 @@
 function query_chimera_data(){
     $.getJSON("telops.json?"+new Date().getTime(),function(data){
-        var instruments = ['dome_AshDome', 'telescope_T80S', 'camera_T80Cam', 'weather_lcogt', 'weather_blanco_ws',
-        'weather_wxt520', 'weather_rasicam', 'fan_M1', 'fan_DomeFanEast', 'fan_DomeFanWest', 'seeing_blanco_seeing',
-        'weather_aag',
-        'scheduler_state_sequential', 'scheduler_msg_sequential']; //, 'fan_DomeFanEast'];
+        var instruments = ['dome_dome40', 'telescope_paramount', 'camera_apogee_AltaU16M', 'weather_opd160', 'fan_M1',
+        'weather_aag', 'scheduler_state_lna40sched', 'scheduler_msg_lna40sched'];
         for (var i in instruments){
             // Print in red data older than 20 minutes.
             if (typeof data[instruments[i]] != 'undefined'){
 //                alert(instruments[i]+data[instruments[i]]['last_update']);
-                if (Date.now() > Date.parse(data[instruments[i]]['last_update']+" UTC") + 10 * 60 * 1000) {   // 10 minutes
+                if (Date.now() > Date.parse(data[instruments[i]]['last_update']+" UTC") + 20 * 60 * 1000) {   // 20 minutes
                     var color = "red";
                 }else{
                     var color = "";
@@ -23,10 +21,10 @@ function query_chimera_data(){
 //                }
             }
         }
-    telescope_pointer.ra = data['telescope_T80S']['ra_deg'];
-    telescope_pointer.dec = data['telescope_T80S']['dec_deg'];
-    telescope_pointer.url = "http://server1.wikisky.org/v2?ra="+(data['telescope_T80S']['ra_deg']/15)+"&de="+(data['telescope_T80S']['dec_deg'])+"&zoom=6&img_source=DSS2"
-    telescope_pointer.img = 'http://server7.sky-map.org/imgcut?survey=DSS2&w=128&h=128&ra='+(data['telescope_T80S']['ra_deg']/15)+'&de='+data['telescope_T80S']['dec_deg']+'&angle=0.25&output=PNG';
+    telescope_pointer.ra = data['telescope_paramount']['ra_deg'];
+    telescope_pointer.dec = data['telescope_paramount']['dec_deg'];
+    telescope_pointer.url = "http://server1.wikisky.org/v2?ra="+(data['telescope_paramount']['ra_deg']/15)+"&de="+(data['telescope_paramount']['dec_deg'])+"&zoom=6&img_source=DSS2"
+    telescope_pointer.img = 'http://server7.sky-map.org/imgcut?survey=DSS2&w=128&h=128&ra='+(data['telescope_paramount']['ra_deg']/15)+'&de='+data['telescope_paramount']['dec_deg']+'&angle=0.25&output=PNG';
     telescope_pointer.html =  '<div class="virtualsky_infocredit">'+
                                         '<a href="'+telescope_pointer.url+'" style="color: white;">DSS2/Wikisky</a>'+
                                 '</div>'+

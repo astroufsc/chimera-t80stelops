@@ -1,2 +1,2 @@
-var longit = -70.806525;
-var latitu = -30.169661;
+var longit = -45.5825;
+var latitu = -22.534444444444446;
