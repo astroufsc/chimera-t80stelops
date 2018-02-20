@@ -1,63 +1,75 @@
-chimera-template plugin
-=======================
-
-This is a template plugin for the chimera observatory control system
-https://github.com/astroufsc/chimera.
-
-Usage
------
-
-Rename chimera_template for your plugin name. It is important that the plugin
-name must start with chimera\_ to be found by chimera. Instruments and
-controllers must follow the standard ``chimera_(plugin_name)/(instruments|controllers)/(plugin).py``
-
-The class inside ``(plugin).py`` should be named Plugin (with CamelCase letters).
-
-For more info: https://github.com/astroufsc/chimera/blob/master/docs/site/chimerafordevs.rst#chimera-objects
+chimera-t80stelops plugin
+=========================
 
 
 Installation
 ------------
 
-Installation instructions. Dependencies, etc...
+On the www vm:
 
-::
+* Drop the html/ content in the apache html dir, i.e., /var/www/html/ ::
 
-   pip install -U chimera_template
+    cd /var/www/
+    git clone https://github.com/astroufsc/chimera-t80stelops.git
+    ln -s chimera-t80stelops/html/
+    cd chimera-t80stelops/
+    git submodule update --init --recursive
 
-or
+* Configure proxies for the internal www server where chimera-telops backend runs::
 
-::
+    # In /etc/apache2/mods-available/proxy.conf
+        ProxyRequests On
+        <Proxy *>
+           #AddDefaultCharset off
+           #Require all denied
+           #Require local
+           Order deny,allow
+           Allow from all
+        </Proxy>
 
-    pip install -U git+https://github.com/astroufsc/chimera-template.git
+    # In /etc/apache2/sites-available/000-default.conf:
+
+    # For the t80s-telops backend:
+    ProxyPass "/telops.json" "http://192.168.30.109:8080/telops"
+
+    # For the AllSky
+    ProxyPass "/images" "http://192.168.20.128:8080/images"
+
+    # For the external camera
+    ProxyPass "/extcam.jpg" "http://192.168.20.104/axis-cgi/jpg/image.cgi"
+
+    # For the RRD graphs
+    ProxyPass "/rrd" "http://192.168.30.109:8080/rrd"
+
+* For the LNA case::
+
+    # For the internal camera
+        ProxyPass "/intcam.jpg" "http://admin:@200.131.64.169/image.jpg"
+        <Location /intcam.jpg>
+        RequestHeader set Authorization "Basic YWRtaW46"
+        </Location>
+
+    # For the WebAdmin
+        ProxyPass "/control" "http://127.0.0.1:5000/"
+
+where the Basic autentication hash is given by this StackOverflow answer example: https://superuser.com/questions/704781/apache-mod-proxy-with-automatic-authentication
 
 
-Configuration Example
----------------------
+enable proxy module::
 
-Here goes an example of the configuration to be added on ``chimera.config`` file.
-
-::
-
-    instrument:
-        name: model
-        type: Example
+    a2enmod proxy
+    a2enmod proxy_http
+    service apache2 restart
 
 
-Tested Hardware (for instruments)
----------------------------------
 
-This plugin was tested on these hardware:
+On the internal www/telops vm:
 
-* Hardware example 1, model 2
-* Hardware example 2, model 3
+* Install chimera::
 
+    pip install https://github.com/astroufsc/chimera/archive/master.zip
 
-Contact
--------
+* Install chimera-telops::
 
-For more information, contact us on chimera's discussion list:
-https://groups.google.com/forum/#!forum/chimera-discuss
+    pip install https://github.com/astroufsc/chimera-t80stelops/archive/master.zip
 
-Bug reports and patches are welcome and can be sent over our GitHub page:
-https://github.com/astroufsc/chimera-template/
