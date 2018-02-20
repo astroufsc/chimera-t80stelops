@@ -201,10 +201,10 @@ class T80STelops(ChimeraObject):
                         # self._data['camera_%s' % camname]['status'] = 'Exposing' if camera.isExposing() else 'Idle'
                         self._data['camera_%s' % camname]['temperature'] = "%.2f" % camera.getTemperature()
                         self._data['camera_%s' % camname]['pressure'] = "%.3f" % camera.getPressure()
-                        self._data['camera_%s' % camname]['last_update'] = datetime.datetime.utcnow().strftime(
-                            '%Y-%m-%d %H:%M:%S')
                     except AttributeError:
                         pass
+                    self._data['camera_%s' % camname]['last_update'] = datetime.datetime.utcnow().strftime(
+                        '%Y-%m-%d %H:%M:%S')
 
         if self["fans"] is not None:
             for fan in self["fans"]:
