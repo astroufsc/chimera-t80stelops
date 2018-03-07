@@ -6,7 +6,13 @@ from chimera.core.callback import callback
 from chimera.core.chimeraobject import ChimeraObject
 from chimera.core.exceptions import ObjectNotFoundException, ChimeraException
 from chimera.core.manager import Manager
-from pymodbus.exceptions import ConnectionException
+from chimera_supervisor.controllers.status import InstrumentOperationFlag
+
+# This import is just for the T80S fans. It is not necessary for testing and for LNA.
+try:
+    from pymodbus.exceptions import ConnectionException
+except ImportError:
+    pass
 
 
 class SchedCallbacks(object):
@@ -46,6 +52,7 @@ class T80STelops(ChimeraObject):
                   "fans": [],
                   "seeingmonitors": [],
                   "schedulers": [],
+                  "supervisors": [],
                   "local_manager_ip": "127.0.0.1",
                   "local_manager_port": 9001,
                   }
@@ -93,6 +100,21 @@ class T80STelops(ChimeraObject):
         return True
 
     def query_instruments(self):
+
+        # Supervisors
+        if self["supervisors"] is not None:
+            for s in self["supervisors"]:
+                supervisor = self.get_instrument(s)
+                if supervisor:
+                    sname = s.split('/')[-1]
+
+                    self._data["supervisor_%s" % sname] = dict()
+
+                    for instrument in supervisor.getInstrumentList():
+                        flag = supervisor.getFlag(instrument)
+                        key = " (" + ", ".join(supervisor.getInstrumentKey(instrument)) + ")" \
+                            if flag == InstrumentOperationFlag.LOCK else ''
+                        self._data["supervisor_%s" % sname].update({instrument: str(flag) + key})
 
         # Seeing monitors
         if self["seeingmonitors"] is not None:
