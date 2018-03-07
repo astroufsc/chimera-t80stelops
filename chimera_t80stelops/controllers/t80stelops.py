@@ -108,7 +108,8 @@ class T80STelops(ChimeraObject):
                 if supervisor:
                     sname = s.split('/')[-1]
 
-                    self._data["supervisor_%s" % sname] = dict()
+                    self._data["supervisor_%s" % sname] = {'last_update':
+                                                               datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}
 
                     for instrument in supervisor.getInstrumentList():
                         flag = supervisor.getFlag(instrument)
