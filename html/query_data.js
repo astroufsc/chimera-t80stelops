@@ -1,7 +1,7 @@
 function query_chimera_data(){
     $.getJSON("telops.json?"+new Date().getTime(),function(data){
         var instruments = ['dome_dome40', 'telescope_paramount', 'camera_apogee_AltaU16M', 'weather_opd160', 'fan_M1',
-        'weather_aag', 'scheduler_state_lna40sched', 'scheduler_msg_lna40sched'];
+        'weather_aag', 'scheduler_state_lna40sched', 'scheduler_msg_lna40sched', 'supervisor_telops'];
         for (var i in instruments){
             // Print in red data older than 20 minutes.
             if (typeof data[instruments[i]] != 'undefined'){

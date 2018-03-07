@@ -13,44 +13,24 @@
     <script src="jquery-1.9.1.min.js"></script>
     <script src="vs/virtualsky.min.js" type="text/javascript"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-                var planetarium = $.virtualsky({
-                        id: 'starmap',
-                        projection: 'fisheye',
-                        live: true,
-                        showgalaxy: true,
-                        latitude: latitu,
-                        longitude: longit
-                });
-                planetarium.addPointer({
-                                            'ra': 0,
-                                            'dec': 0,
-                                            'label':'40cm',
-                                            'colour':'rgb(255,220,220)'
-                        });
-                telescope_pointer = planetarium.pointers[0]
+            var planetarium = $.virtualsky({
+                id: 'starmap',
+                projection: 'fisheye',
+                live: true,
+                showgalaxy: true,
+                latitude: latitu,
+                longitude: longit
+            });
+            planetarium.addPointer({
+                'ra': 0,
+                'dec': 0,
+                'label': '40cm',
+                'colour': 'rgb(255,220,220)'
+            });
+            telescope_pointer = planetarium.pointers[0]
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     </script>
@@ -61,49 +41,30 @@
     <!-- Reload images periodically -->
     <script>
         // 	1 - Graphs every minute
-        setInterval(function(){
-            $("#teltempgraph").attr("src", "/rrd/temperatures.png?"+new Date().getTime());
-        },60000);
+        setInterval(function () {
+            $("#teltempgraph").attr("src", "/rrd/temperatures.png?" + new Date().getTime());
+        }, 60000);
         // 	2 - Allsky images every 10 minutes
-        setInterval(function(){
-            $("#allsky").attr("src", "http://200.131.64.207/allsky/imagens340/AllSkyCurrentImage.JPG?"+new Date().getTime());
-        },600000);
+        setInterval(function () {
+            $("#allsky").attr("src", "http://200.131.64.207/allsky/imagens340/AllSkyCurrentImage.JPG?" + new Date().getTime());
+        }, 600000);
         // 	2 - Webcam images every 5 minutes
-        setInterval(function(){
-            $("#internal-cam").attr("src", "/intcam.jpg?"+new Date().getTime());
-        },300000);
+        setInterval(function () {
+            $("#internal-cam").attr("src", "/intcam.jpg?" + new Date().getTime());
+        }, 300000);
         // 	2 - Cloud watcher every 2 minutes
-        setInterval(function(){
-            $("#cw-cloud").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageCloudCondition.png?"+new Date().getTime());
-        },120000);
-        setInterval(function(){
-            $("#cw-light").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageDayCondition.png?"+new Date().getTime());
-        },120000);
-        setInterval(function(){
-            $("#cw-rain").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageRainCondition.png?"+new Date().getTime());
-        },120000);
-        setInterval(function(){
-            $("#cw-temperature").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageTemperature.png?"+new Date().getTime());
-        },120000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        setInterval(function () {
+            $("#cw-cloud").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageCloudCondition.png?" + new Date().getTime());
+        }, 120000);
+        setInterval(function () {
+            $("#cw-light").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageDayCondition.png?" + new Date().getTime());
+        }, 120000);
+        setInterval(function () {
+            $("#cw-rain").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageRainCondition.png?" + new Date().getTime());
+        }, 120000);
+        setInterval(function () {
+            $("#cw-temperature").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageTemperature.png?" + new Date().getTime());
+        }, 120000);
 
 
     </script>
@@ -124,16 +85,14 @@
         <tr>
 
 
-            <td class="maps-graphs">
-                <center>
-                    <div id="starmap" style="width:400px;height:400px;"></div>
-                </center>
-                <!--<iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
-                <!--src="http://lcogt.net/virtualsky/embed/?longitude=-70&latitude=-16&projection=polar"-->
-                <!--allowTransparency="true"></iframe>-->
-                <img id="teltempgraph" src="/rrd/temperatures.png"><br>
+            <!--<td class="maps-graphs">-->
+            <!--<div id="starmap" style="width:400px;height:400px;"></div>-->
+            <!--&lt;!&ndash;<iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"&ndash;&gt;-->
+            <!--&lt;!&ndash;src="http://lcogt.net/virtualsky/embed/?longitude=-70&latitude=-16&projection=polar"&ndash;&gt;-->
+            <!--&lt;!&ndash;allowTransparency="true"></iframe>&ndash;&gt;-->
+            <!--<img id="teltempgraph" src="/rrd/temperatures.png"><br>-->
 
-            </td>
+            <!--</td>-->
 
             <td class="data-list">
 
@@ -149,8 +108,42 @@
                         </td>
                     </tr>
 
-                <!--END OF CONTROL-->
+
                 </table>
+                <!--END OF CONTROL-->
+
+                <!--STATUS-->
+                <table>
+                    <tr>
+                        <td class="caution-name">SUPERVISOR STATUS</td>
+                    </tr>
+                </table>
+
+                <table>
+                    <tr>
+                        <td class="observatory-prop-name">SITE</td>
+                        <td><label id="supervisor_telops_site"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">TELESCOPE</td>
+                        <td><label id="supervisor_telops_telescope"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">DOME</td>
+                        <td><label id="supervisor_telops_dome"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">ROBOBS</td>
+                        <td><label id="supervisor_telops_robobs"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="observatory-prop-name">Last Update</td>
+                        <td><label id="supervisor_telops_last_update"></label></td>
+                    </tr>
+
+
+                </table>
+                <!--END OF CONTROL-->
 
                 <table>
                     <!-- begin clock section -->
@@ -219,29 +212,21 @@
                         </td>
                         <script>
 
-                                document.getElementById('moon_phase').innerHTML = 100 * Math.round(100 * SunCalc.getMoonIllumination(new Date()).fraction)/100;
+                            document.getElementById('moon_phase').innerHTML = 100 * Math.round(100 * SunCalc.getMoonIllumination(new Date()).fraction) / 100;
 
-                                var moon = SunCalc.getMoonTimes(new Date(),latitu, longit, 1);
-                                document.getElementById('moon_rise').innerHTML = ("0"+moon.rise.getUTCHours()).slice(-2)+":"+("0"+moon.rise.getUTCMinutes()).slice(-2)+":"+("0"+moon.rise.getUTCSeconds()).slice(-2);
-                                document.getElementById('moon_set').innerHTML = ("0"+moon.set.getUTCHours()).slice(-2)+":"+("0"+moon.set.getUTCMinutes()).slice(-2)+":"+("0"+moon.set.getUTCSeconds()).slice(-2);
+                            var moon = SunCalc.getMoonTimes(new Date(), latitu, longit, 1);
+                            document.getElementById('moon_rise').innerHTML = ("0" + moon.rise.getUTCHours()).slice(-2) + ":" + ("0" + moon.rise.getUTCMinutes()).slice(-2) + ":" + ("0" + moon.rise.getUTCSeconds()).slice(-2);
+                            document.getElementById('moon_set').innerHTML = ("0" + moon.set.getUTCHours()).slice(-2) + ":" + ("0" + moon.set.getUTCMinutes()).slice(-2) + ":" + ("0" + moon.set.getUTCSeconds()).slice(-2);
 
-                                var sun = SunCalc.getTimes(new Date(), latitu, longit, 1);
-                                document.getElementById('sun_dawn').innerHTML = ("0"+sun.dawn.getUTCHours()).slice(-2)+":"+("0"+sun.dawn.getUTCMinutes()).slice(-2)+":"+("0"+sun.dawn.getUTCSeconds()).slice(-2);
-                                document.getElementById('sun_dusk').innerHTML = ("0"+sun.dusk.getUTCHours()).slice(-2)+":"+("0"+sun.dusk.getUTCMinutes()).slice(-2)+":"+("0"+sun.dusk.getUTCSeconds()).slice(-2);
+                            var sun = SunCalc.getTimes(new Date(), latitu, longit, 1);
+                            document.getElementById('sun_dawn').innerHTML = ("0" + sun.dawn.getUTCHours()).slice(-2) + ":" + ("0" + sun.dawn.getUTCMinutes()).slice(-2) + ":" + ("0" + sun.dawn.getUTCSeconds()).slice(-2);
+                            document.getElementById('sun_dusk').innerHTML = ("0" + sun.dusk.getUTCHours()).slice(-2) + ":" + ("0" + sun.dusk.getUTCMinutes()).slice(-2) + ":" + ("0" + sun.dusk.getUTCSeconds()).slice(-2);
 
-                                var sunpos = SunCalc.getPosition(new Date(), latitu, longit);
-                                document.getElementById('sun_alt').innerHTML = Math.round(sunpos.altitude * 180 / Math.PI);
+                            var sunpos = SunCalc.getPosition(new Date(), latitu, longit);
+                            document.getElementById('sun_alt').innerHTML = Math.round(sunpos.altitude * 180 / Math.PI);
 
-                                var moonpos = SunCalc.getMoonPosition(new Date(), latitu, longit);
-                                document.getElementById('moon_alt').innerHTML = Math.round(moonpos.altitude * 180 / Math.PI);
-
-
-
-
-
-
-
-
+                            var moonpos = SunCalc.getMoonPosition(new Date(), latitu, longit);
+                            document.getElementById('moon_alt').innerHTML = Math.round(moonpos.altitude * 180 / Math.PI);
 
 
                         </script>
