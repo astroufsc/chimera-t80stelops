@@ -14,7 +14,7 @@ function query_chimera_data() {
                 for (var key in data[instruments[i]]) {
                     $('#' + instruments[i] + '_' + key).text(data[instruments[i]][key]);
 
-                    if (color === "red" && instruments[i].startsWith("supervisor_")) {
+                    if (color === "" && instruments[i].startsWith("supervisor_")) {
                         var color_status = "";
                         if (data[instruments[i]][key].startsWith("READY")) {
                             color_status = "green";
