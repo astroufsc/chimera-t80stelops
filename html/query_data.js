@@ -16,7 +16,7 @@ function query_chimera_data() {
 
                     if (color === "" && instruments[i].startsWith("supervisor_")) {
                         var color_status = "";
-                        if (data[instruments[i]][key].startsWith("READY")) {
+                        if (data[instruments[i]][key].startsWith("READY") || data[instruments[i]][key].startsWith("OPERATING")) {
                             color_status = "green";
                         } else if (data[instruments[i]][key].startsWith("UNSET")) {
                             color_status = "blue";
