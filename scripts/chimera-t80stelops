@@ -44,6 +44,11 @@ class ChimeraTelops(ChimeraCLI):
         def telops_data():
             return self.t80stelops.get_data()
 
+        @route('/autofocus.png')
+        def send_autofocus_plot():
+            path, filename = os.path.split(os.popen(os.path.expanduser("ls -t ~/.chimera/autofocus-*/*png")).readlines()[0].replace('\n',''))
+            return static_file(filename, root=path, mimetype='image/png')
+
         @route('/images/<filename:re:.*\.png>')
         def send_image(filename):
             return static_file(filename, root=options.path, mimetype='image/png')

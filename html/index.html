@@ -52,6 +52,10 @@
         setInterval(function () {
             $("#internal-cam").attr("src", "/intcam.jpg?" + new Date().getTime());
         }, 300000);
+        // 	2 - Focus every 10 minutes
+        setInterval(function () {
+            $("#last-focus").attr("src", "/autofocus.png?" + new Date().getTime());
+        }, 600000);
         // 	2 - Cloud watcher every 2 minutes
         setInterval(function () {
             $("#cw-cloud").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageCloudCondition.png?" + new Date().getTime());
@@ -64,6 +68,20 @@
         }, 120000);
         setInterval(function () {
             $("#cw-temperature").attr("src", "http://200.131.64.207/allsky/sensor_nuvens/AAG_ImageTemperature.png?" + new Date().getTime());
+        }, 120000);
+
+        // 	2 - Weather station every 2 minutes
+        setInterval(function () {
+            $("#opd-temperature").attr("src", "http://200.131.64.185/clima/Images/Profile1/OutsideTempHistory.gif?" + new Date().getTime());
+        }, 120000);
+        setInterval(function () {
+            $("#opd-humidity").attr("src", "http://200.131.64.185/clima/Images/Profile1/OutsideHumidityHistory.gif?" + new Date().getTime());
+        }, 120000);
+        setInterval(function () {
+            $("#opd-leaf").attr("src", "http://200.131.64.185/clima/Images/Profile1/LeafWet1History.gif?" + new Date().getTime());
+        }, 120000);
+        setInterval(function () {
+            $("#opd-uv").attr("src", "http://200.131.64.185/clima/Images/Profile1/UVHistory.gif?" + new Date().getTime());
         }, 120000);
 
 
@@ -339,8 +357,12 @@
         <tr>
             <td class="maps-graphs">
 
-                Dome Cam (<a href="http://200.131.64.169/jview.html" , target="_video">Open VIDEO</a>)<br>
+                Dome Cam (<a href="http://200.131.64.169/" , target="_video">Open VIDEO</a>)<br>
                 <img id="internal-cam" src="/intcam.jpg" , width=640, height=480><br>
+
+                Last Focus <br>
+                <img id="last-focus" src="/autofocus.png"><br>
+
 
                 <!--TOLOLO<br>-->
                 <!--<img id="tascaallsky" src="/tasca/late_r.png" , width=512, height=512><br>-->
@@ -408,9 +430,9 @@
                     </tr>
 
                     <tr>
-                        <td><img id="temperature"
+                        <td><img id="opd-temperature"
                                  src="http://200.131.64.185/clima/Images/Profile1/OutsideTempHistory.gif"></td>
-                        <td><img id="humidity"
+                        <td><img id="opd-humidity"
                                  src="http://200.131.64.185/clima/Images/Profile1/OutsideHumidityHistory.gif"></td>
                     </tr>
 
@@ -420,8 +442,8 @@
                     </tr>
 
                     <tr>
-                        <td><img id="leaf" src="http://200.131.64.185/clima/Images/Profile1/LeafWet1History.gif"></td>
-                        <td><img id="uv" src="http://200.131.64.185/clima/Images/Profile1/UVHistory.gif"></td>
+                        <td><img id="opd-leaf" src="http://200.131.64.185/clima/Images/Profile1/LeafWet1History.gif"></td>
+                        <td><img id="opd-uv" src="http://200.131.64.185/clima/Images/Profile1/UVHistory.gif"></td>
                     </tr>
                     <!--Weather Graphs END-->
 
