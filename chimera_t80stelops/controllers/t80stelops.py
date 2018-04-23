@@ -255,7 +255,10 @@ class T80STelops(ChimeraObject):
                 try:
                     self.schedname = sched.split('/')[-1]
                     f = self.get_instrument(sched)
+                    current_program = f.currentProgram()
+                    current_program = 'None' if current_program is None else current_program.name
                     self._data['scheduler_state_%s' % self.schedname].update({'state': str(f.state()),
+                                                                              'program': current_program,
                                                                               'last_update': datetime.datetime.utcnow().strftime(
                                                                                   '%Y-%m-%d %H:%M:%S')})
                 except AttributeError:
