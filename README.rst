@@ -41,6 +41,9 @@ On the www vm:
     # For the RRD graphs
     ProxyPass "/rrd" "http://192.168.30.109:8080/rrd"
 
+    # For the Seeing monitor graph
+    ProxyPass "/seeing.png" "http://ctio4lnew.ctio.noao.edu/web/CTIO/tmp/webfwhm2.jpg"
+
 * For the LNA case::
 
     # For the internal camera
